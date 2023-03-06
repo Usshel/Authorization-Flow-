@@ -1,0 +1,8 @@
+<div *ngIf="isUserEmailVerified$ | async as verified">
+    {{verified}}
+</div>
+<div *ngIf="userAccessToken$ | async as token">
+{{token}}
+</div>
+
+You are logged-In and verified
