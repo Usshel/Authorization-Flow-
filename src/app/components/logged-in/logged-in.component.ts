@@ -14,4 +14,7 @@ export class LoggedInComponent {
   constructor(private _authService: AuthService) {
   }
 
+  logout(): void{
+    this._authService.logout();
+  }
 }

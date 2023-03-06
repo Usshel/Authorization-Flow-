@@ -13,7 +13,7 @@ export class HasEmailVerifiedGuard implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this._authService.IsUserEmailVerified$.pipe(
       map((isVerified) => {
         return isVerified === route.data['verified']

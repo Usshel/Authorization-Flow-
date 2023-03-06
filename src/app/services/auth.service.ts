@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { CurrentUserDataQueryModel } from '../query-models/current-user-data.query-model';
 import { StorageService } from './storage.service';
 import { UserCredentialsModel } from '../models/user-credentials.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  
+
   private _isUserEmailVerifiedSubject: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(
-    ( (localStorage.getItem('emailVerified')) === 'true'
+    ((localStorage.getItem('emailVerified')) === 'true'
     )
-    
-    );
+
+  );
   public IsUserEmailVerified$: Observable<boolean | null> = this._isUserEmailVerifiedSubject.asObservable().pipe(tap((data) => console.log(data)));
 
   private _userAccessTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(localStorage.getItem('accessToken'));
@@ -46,4 +45,10 @@ export class AuthService {
     this._userAccessTokenSubject.next(userCredentials.accessToken);
   }
 
+  logout(): void {
+    this._storage.removeItem('accessToken'),
+    this._storage.removeItem('emailVerified')
+    this._isUserEmailVerifiedSubject.next(null),
+    this._userAccessTokenSubject.next(null)
+  }
 }

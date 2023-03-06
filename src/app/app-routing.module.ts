@@ -9,6 +9,10 @@ import { RegisterComponentModule } from './components/register/register.componen
 import { LoggedInComponentModule } from './components/logged-in/logged-in.component-module';
 import { VerifyComponentModule } from './components/verify/verify.component-module';
 import { HasEmailVerifiedGuard } from './guards/has-email-verified.guard';
+import { HasTokenGuard } from './guards/has-token.guard';
+import { CompleteProfileComponent } from './components/complete-profile/complete-profile.component';
+import { CompleteProfileComponentModule } from './components/complete-profile/complete-profile.component-module';
+import { HasNameGuard } from './guards/has-name.guard';
 
 @NgModule({
   imports: [RouterModule.forRoot([
@@ -17,25 +21,31 @@ import { HasEmailVerifiedGuard } from './guards/has-email-verified.guard';
     { 
     path: 'logged-in', 
     component: LoggedInComponent, 
-    canActivate: [HasEmailVerifiedGuard],
+    canActivate: [HasTokenGuard, HasEmailVerifiedGuard, HasNameGuard],
     data:{
       redirectUrl: 'verify',
-      verified: true
+      verified: true,
+      redirectUrlToLogin: 'login',
+      urlHasNoName: 'complete-profile'
     } 
   }, 
     { 
       path: 'verify', 
       component: VerifyComponent,
+      canActivate: [HasTokenGuard],
       data:{
         redirectUrl: 'logged-in',
-        verified: false
+        verified: false,
+        redirectUrlToLogin: 'login'
       } 
-    }
+    },
+    { path: 'complete-profile', component: CompleteProfileComponent }
   ]),
      LoginComponentModule, 
      RegisterComponentModule, 
      LoggedInComponentModule, 
-     VerifyComponentModule],
+     VerifyComponentModule,
+     CompleteProfileComponentModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
